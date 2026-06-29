@@ -206,10 +206,10 @@ export default function App() {
     return null;
   });
   const [search, setSearch] = useState("");
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
-  const [confirmDelete, setConfirmDelete] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(pages));
@@ -221,7 +221,7 @@ export default function App() {
     p.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  const handleSelect = useCallback((id) => {
+  const handleSelect = useCallback((id: string) => {
     setEditingId(null);
     setConfirmDelete(null);
     setSelectedId(id);
@@ -277,7 +277,7 @@ export default function App() {
       return next;
     });
     if (confirmDelete === selectedId) {
-      setSelectedId((prev) => {
+      setSelectedId((prev: string | null) => {
         if (prev === confirmDelete) {
           const idx = pages.findIndex((p) => p.id === confirmDelete);
           const remaining = pages.filter((p) => p.id !== confirmDelete);
@@ -297,12 +297,12 @@ export default function App() {
     setConfirmDelete(null);
   }, []);
 
-  const renderContent = (text) => {
+  const renderContent = (text: string) => {
     const lines = text.split("\n");
-    const elements = [];
+    const elements: React.ReactElement[] = [];
     let inList = false;
     let inCheckList = false;
-    let listItems = [];
+    let listItems: React.ReactElement[] = [];
 
     const flushList = () => {
       if (inList) {
