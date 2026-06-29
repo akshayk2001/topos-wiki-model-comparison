@@ -21,6 +21,89 @@ TOPOS evaluation is run from the repository root using a shared GitNexus depende
 
 The main tradeoff is that the generated apps are intentionally simple. That makes them easy to compare, but it also means the outputs are mostly monolithic: most behavior lives in `App.tsx` instead of being split into components, hooks, and data modules. This tradeoff is visible in the TOPOS results, where all four outputs scored well on security but poorly on composability.
 
+### One-Shot Generation Prompt
+
+To ensure a fair and standardized comparison across all prototypes, each model was given the exact same instructions. Below is the one-shot prompt used to generate the applications:
+
+```text
+Create a very simple personal wiki app using React.
+
+Do not ask follow-up questions. Produce complete working code.
+
+Goal:
+Build a small React app where a user can create, edit, view, search, and delete personal wiki pages. The app should store pages in `localStorage`.
+
+Use a standard Vite React project.
+
+Source material:
+Use only these three local PDF files as the basis for the default wiki content:
+
+- `wiki-sources/bollywood_music.pdf`
+- `wiki-sources/meditation_article.pdf`
+- `wiki-sources/tennis_article.pdf`
+
+Do not use any other files, websites, APIs, or outside knowledge to create the default wiki content.
+Do not invent facts that are not supported by the three PDFs.
+If a detail is unclear, keep it general.
+
+Default wiki content:
+Create these starter pages based only on the three PDFs:
+
+1. `Home`
+   - Briefly introduce the wiki as a collection of notes from the three sources.
+   - Mention the three topic areas: Bollywood music, meditation, and tennis.
+
+2. `Bollywood Music`
+   - Summarize the main points from `sources/bollywood_music.pdf`.
+
+3. `Meditation`
+   - Summarize the main points from `sources/meditation_article.pdf`.
+
+4. `Tennis`
+   - Summarize the main points from `sources/tennis_article.pdf`.
+
+5. `Connections`
+   - Briefly compare or connect ideas across the three sources, but only when the connection is reasonably supported by the PDFs.
+
+6. `Questions`
+   - List a few open questions or things worth exploring further based on the PDFs.
+
+Required files:
+- `package.json`
+- `index.html`
+- `src/main.jsx`
+- `src/App.jsx`
+- `src/styles.css`
+
+Required features:
+1. A sidebar listing all page titles.
+2. A search input that filters pages by title.
+3. A main area showing the selected page.
+4. A button to create a new page.
+5. An edit mode for changing the selected page title and content.
+6. A save button.
+7. A delete button with confirmation.
+8. Store pages in `localStorage`.
+9. Load saved pages when the app starts.
+10. If there are no saved pages, create the default source-based pages listed above.
+
+Keep it simple:
+- No routing.
+- No backend.
+- No markdown parser.
+- No wiki link parsing.
+- No import/export.
+- No external UI libraries.
+- Plain React and CSS only.
+- Clean, readable code.
+- Simple responsive layout.
+
+Output format:
+First provide a one-sentence summary.
+Then create or modify the files directly in the workspace.
+Do not omit any required files.
+```
+
 ## Evaluation Summary
 
 | Output | Directory Avg. | Floor Verdict | App.tsx | main.tsx | Notes |
@@ -34,7 +117,7 @@ All four outputs scored 100% on the secure pillar. All four scored 0% on composa
 
 See [TOPOS_EVALUATION.md](TOPOS_EVALUATION.md) for commands, detailed scores, and interpretation.
 
-## Running An App
+## Running the App
 
 Each prototype is an independent Vite + React app. After cloning the repository, run commands from the repository root unless the command explicitly changes folders.
 
